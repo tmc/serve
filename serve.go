@@ -2,6 +2,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 )
@@ -11,6 +12,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	println("http://localhost:8080/")
-	panic(http.ListenAndServe(":8080", http.FileServer(http.Dir(wd))))
+	port := "8080"
+	if p := os.Getenv("PORT"); p != "" {
+		port = p
+	}
+	fmt.Printf("http://localhost:%v/\n", port)
+	panic(http.ListenAndServe(fmt.Sprintf(":%v", port), http.FileServer(http.Dir(wd))))
 }
